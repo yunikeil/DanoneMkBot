@@ -1,10 +1,10 @@
-from .start_n_state import start_state_handlers
-from .main_n_state import main_state_handlers
+from .telegram.start_n_state import start_state_handlers
+from .telegram.main_n_state import main_state_handlers
 
-from .catalog_n_state import catalog_handlers
-from .shopping_cart_n_state import shopping_cart_handlers
-from .about_us_n_state import about_us_handlers
-from .personal_cabinet_n_state import personal_cabinet_handlers
+from .telegram.catalog_n_state import catalog_handlers
+from .telegram.shopping_cart_n_state import shopping_cart_handlers
+from .telegram.about_us_n_state import about_us_handlers
+from .telegram.personal_cabinet_n_state import personal_cabinet_handlers
 
 
 bot_handlers = [
