@@ -25,6 +25,7 @@ ECHO_SQL: bool = os.getenv("ECHO_SQL").lower() == "true"
 
 BOT_VERSION: str = os.getenv("BOT_VERSION")
 ADMIN_ID: str = os.getenv("ADMIN_ID")
+ADMIN_IDS: list[int] = [int(id) for id in os.getenv("ADMIN_IDS").split(",")]
 
 DATABASE_URL: str = os.getenv("DATABASE_URL")
 REDIS_URL: str = os.getenv("REDIS_URL")

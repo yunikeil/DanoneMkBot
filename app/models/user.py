@@ -1,3 +1,4 @@
+import time
 from typing import TYPE_CHECKING
 
 from sqlalchemy import Column, Integer, Enum
@@ -9,22 +10,17 @@ if TYPE_CHECKING:
     from .shopping_cart import ShoppingCart
 
 
-class UserRoleEnum(Enum):
-    ADMIN = "admin"
-    USER = "user"
-
-
 class User(Base):
     __tablename__ = "user"
-
+    
     tg_id = Column(Integer, primary_key=True)
-    role = Column(Enum(UserRoleEnum), default=UserRoleEnum.USER)
-    created_at = Column(Integer)
+    role = Column(Enum('user', 'admin', name="user_roles"), default="user", nullable=False)
+    created_at = Column(Integer, nullable=False, default=int(time.time()))
     
     shopping_carts: Mapped[list["ShoppingCart"]] = relationship(
         back_populates="user", lazy="selectin"
     )
     
     def is_admin(self):
-        return self.role == UserRoleEnum.ADMIN
+        return self.role == "user"
 
