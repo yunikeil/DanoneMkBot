@@ -8,7 +8,9 @@ def get_create_catalog_callback():
     
     async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.callback_query.answer()
-        await update.callback_query.edit_message_text(text="create_catalog")
+        await update.callback_query.edit_message_text(text="Введите по три строки каталоги")
+        
+        return "enter_new_catalogs_data"
     
     return CallbackQueryHandler(callback, pattern)
 
@@ -19,6 +21,8 @@ def get_delete_catalog_callback():
     async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.callback_query.answer()
         await update.callback_query.edit_message_text(text="delete_catalog")
+        
+        return
     
     return CallbackQueryHandler(callback, pattern)
 
@@ -29,6 +33,8 @@ def get_update_catalog_callback():
     async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.callback_query.answer()
         await update.callback_query.edit_message_text(text="update_catalog")
+        
+        return
     
     return CallbackQueryHandler(callback, pattern)
 
@@ -38,6 +44,7 @@ def get_close_admin_callback():
     
     async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.callback_query.answer()
-        await update.callback_query.edit_message_text(text="close_admin")
+        await update.callback_query.edit_message_text(text="admin closed...")
     
     return CallbackQueryHandler(callback, pattern)
+

@@ -1,31 +1,15 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import (
-    Application,
-    CallbackQueryHandler,
-    CommandHandler,
-    ContextTypes,
-    ConversationHandler,
-)
+from telegram.ext import ConversationHandler
+
+from .admin_callbacks import get_create_catalog_callback, get_delete_catalog_callback, get_update_catalog_callback, get_close_admin_callback
+from .admin_message import get_create_catalog_message
 
 
-
-
-create_catalog_handler = ConversationHandler(
-    
-)
-
-
-delete_catalog_handler = ConversationHandler(
-    
-)
-
-
-update_catalog_handler = ConversationHandler(
-    
-)
-
-
-close_admin_handler = ConversationHandler(
-    
+admin_catalog_handler = ConversationHandler(
+    entry_points=[get_create_catalog_callback(), get_delete_catalog_callback(), get_update_catalog_callback(), get_close_admin_callback()],
+    states={
+        "enter_new_catalogs_data": [get_create_catalog_message()],
+    },
+    fallbacks=[]
 )
 

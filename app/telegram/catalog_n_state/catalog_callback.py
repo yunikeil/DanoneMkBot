@@ -1,6 +1,8 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ContextTypes
 
+from .__addons import catalog_text, catalog_keyboard
+
 
 def get_catalog_callback():
     pattern = '^catalog$'
@@ -13,7 +15,7 @@ def get_catalog_callback():
         # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
         await query.answer()
 
-        await query.edit_message_text(text=f"Selected option: {query.data}")
+        await query.edit_message_text(text=catalog_text, reply_markup=catalog_keyboard)
     
     return CallbackQueryHandler(callback, pattern)
 

@@ -6,7 +6,7 @@ from .telegram.shopping_cart_n_state import shopping_cart_handlers
 from .telegram.about_us_n_state import about_us_handlers
 from .telegram.personal_cabinet_n_state import personal_cabinet_handlers
 
-from .telegram.admin_state import admin_state_commands
+from .telegram.admin_state import admin_handlers
 
 
 bot_handlers = [
@@ -16,5 +16,5 @@ bot_handlers = [
     *shopping_cart_handlers,
     *about_us_handlers,
     *personal_cabinet_handlers,
-    *admin_state_commands,
+    *admin_handlers,
 ]
