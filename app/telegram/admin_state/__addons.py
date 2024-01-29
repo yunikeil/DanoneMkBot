@@ -26,3 +26,15 @@ admin_keyboard = InlineKeyboardMarkup(
 
     ]
 )
+
+
+after_get_create_catalog_message_keyboard = InlineKeyboardMarkup(
+    [
+        [
+            InlineKeyboardButton("Добавить ещё товар", callback_data="create_catalog"),
+        ],
+        [
+            InlineKeyboardButton("⬅️ В админ панель", callback_data="back_to_admin"),
+        ],
+    ]
+)
