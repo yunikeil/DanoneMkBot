@@ -10,15 +10,10 @@ from .__addons import main_text, get_main_keyboard
 def get_main_command():
     names = ["main"]
 
-    async def command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        async with get_session() as db_session:
-            user = await get_user_by_tg_id(
-                db_session, update.message.from_user.id
-            )
-        
+    async def command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:      
         await update.message.reply_text(
             text=main_text,
-            reply_markup=get_main_keyboard(update.callback_query.from_user.id in config.ADMIN_IDS),
+            reply_markup=get_main_keyboard(update.message.from_user.id in config.ADMIN_IDS),
         )
 
     return CommandHandler(command=names, callback=command)
