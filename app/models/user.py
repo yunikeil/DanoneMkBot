@@ -22,5 +22,5 @@ class User(Base):
     )
     
     def is_admin(self):
-        return self.role == "user"
+        return self.role == "admin"
 

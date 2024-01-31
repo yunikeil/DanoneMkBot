@@ -41,19 +41,9 @@ def get_update_catalog_callback():
     return CallbackQueryHandler(callback, pattern)
 
 
-def get_close_admin_callback():
-    pattern = '^close_admin$'
-    
-    async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        await update.callback_query.answer()
-        await update.callback_query.edit_message_text(text="admin closed...")
-    
-    return CallbackQueryHandler(callback, pattern)
-
-
 # Ниже обработчик вернуться обратно из дополнительных admin панелей
 def get_back_to_admin_callback():
-    pattern = '^back_to_admin$'
+    pattern = '^admin$'
     
     async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.callback_query.answer()
@@ -70,4 +60,5 @@ def get_back_to_admin_callback():
     return CallbackQueryHandler(callback, pattern)
 
 
-admin_callbacks = [get_close_admin_callback(), get_back_to_admin_callback()]
+
+admin_callbacks = [get_back_to_admin_callback()]

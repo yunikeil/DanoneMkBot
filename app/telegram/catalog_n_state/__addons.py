@@ -22,7 +22,7 @@ def get_offset_limit_buttons(current_offset: int, current_limit: int, catalog_co
             InlineKeyboardButton("➡️" if is_last_page else "❌➡️", callback_data=f"catalog:{next_offset}:{current_limit}" if is_last_page else f"catalog:{current_offset}:{current_limit}") 
         ],
         [
-            InlineKeyboardButton("⬅️ К меню", callback_data=f"main")
+            InlineKeyboardButton("⬅️ Вернуться", callback_data=f"main")
         ]
     ]
 
