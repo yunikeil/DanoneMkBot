@@ -19,7 +19,7 @@ def get_offset_limit_buttons(current_offset: int, current_limit: int, catalog_co
             InlineKeyboardButton("⏩" if not is_last_page else "❌⏩", callback_data=f"catalog:{catalog_count - catalog_count % current_limit}:{current_limit}" if not is_last_page else f"catalog:-1:-1")
         ],
         [
-            InlineKeyboardButton("↩️ Вернуться", callback_data=f"main")
+            InlineKeyboardButton("Вернуться ↩️", callback_data=f"main")
         ]
     ]
 
@@ -34,7 +34,7 @@ def get_catalog_back_keyboard(catalog_id: int, current_offset: int, current_limi
                 InlineKeyboardButton("Добавить в корзину", callback_data=f"add_to_shopping_cart:{catalog_id}")
             ],
             [
-                InlineKeyboardButton("↩️ Вернуться", callback_data=f"catalog:{current_offset}:{current_limit}")
+                InlineKeyboardButton("Вернуться ↩️", callback_data=f"catalog:{current_offset}:{current_limit}")
             ]
         ]
     )

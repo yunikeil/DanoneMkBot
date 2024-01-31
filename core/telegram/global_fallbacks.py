@@ -13,7 +13,7 @@ def get_array_global_fallbacks() -> tuple[
     CommandHandler, CommandHandler, MessageHandler, CallbackQueryHandler
 ]:
     all_commands = []
-    stop_commads = ["stop"]
+    stop_commads = ["stop", "cancel"]
     filter = filters.ALL
     pattern = '^.*$'
     
