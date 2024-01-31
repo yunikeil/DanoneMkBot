@@ -14,6 +14,10 @@ def get_catalog_callback():
     async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.callback_query.answer()
         _, offset, limit = update.callback_query.data.split(":")
+                
+        if offset == '-1' or limit == '-1':
+            return
+                
         catalogs: list[Catalog] | None = None
 
         async with get_session() as db_session:
@@ -21,9 +25,9 @@ def get_catalog_callback():
             catalogs = await get_all_catalogs(db_session, int(offset), int(limit))
 
         if not catalogs:
-            text = "no offers no offers"
+            text = "no offers no offers no offers"
         else:
-            text = "offers in bd offers in bd "
+            text = "offers in bd offers in bd offers in bd"
 
         try: # После можно будет перекинуть в общие хендлеры
             await update.callback_query.edit_message_text(
@@ -44,11 +48,15 @@ def get_catalog_callback():
 
 def get_catalog_solo_callback():
     # Отвечает за обработку единичных катологов
-    pattern = r"^catalog:-?\d+:-?\d+:-?\d+$"
+    pattern = r"^catalog:\d+:-?\d+:-?\d+$"
 
     async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.callback_query.answer()
         _, catalog_id, offset, limit = update.callback_query.data.split(":")
+        
+        if offset == '-1' or limit == '-1':
+            return
+
         catalog: Catalog | None = None
 
         async with get_session() as db_session:

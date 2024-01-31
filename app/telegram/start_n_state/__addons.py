@@ -1,4 +1,4 @@
-
+from telegram import ReplyKeyboardMarkup
 
 
 
@@ -16,6 +16,4 @@ text_user_finded = \
 Тут возможно будет описание его возможностей.
 """
 
-
-
-
+main_command_keyboard = ReplyKeyboardMarkup(keyboard=[["/main"]], resize_keyboard=True, one_time_keyboard=False) 

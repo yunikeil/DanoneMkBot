@@ -2,8 +2,6 @@ from telegram import Update
 from telegram.ext import ContextTypes, CommandHandler, ContextTypes
 
 from core.settings import config
-from core.database import get_session
-from app.services import get_user_by_tg_id
 from .__addons import main_text, get_main_keyboard
 
 

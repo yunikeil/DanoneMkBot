@@ -3,7 +3,7 @@ from telegram.ext import ContextTypes, CommandHandler, ContextTypes
 
 from core.database import get_session
 from app.services import get_user_by_tg_id, create_user
-from .__addons import text_user_finded, text_user_not_finded
+from .__addons import text_user_finded, text_user_not_finded, main_command_keyboard
 
 
 def get_start_command():
@@ -21,7 +21,7 @@ def get_start_command():
                 text_to_send = text_user_not_finded
                 user = await create_user(db_session, user_id)
             
-        await update.message.reply_text(text=text_to_send)
+        await update.message.reply_text(text=text_to_send, reply_markup=main_command_keyboard)
         
     return CommandHandler(command=names, callback=command)
 

@@ -18,7 +18,7 @@ about_us_inline_keyboard = InlineKeyboardMarkup(
             InlineKeyboardButton("Версия бота", callback_data="bot_version"),
         ],
         [
-            InlineKeyboardButton("⬅️ Вернуться", callback_data="main"),
+            InlineKeyboardButton("↩️ Вернуться", callback_data="main"),
         ],
     ]
 )
