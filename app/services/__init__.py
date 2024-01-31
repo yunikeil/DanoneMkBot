@@ -2,6 +2,7 @@ from .catalog import (
     create_catalog,
     get_catalog_by_id,
     get_all_catalogs,
+    get_catalogs_count,
     update_catalog,
     delete_catalog,
 )

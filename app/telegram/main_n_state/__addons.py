@@ -5,7 +5,7 @@ main_text = "Добро пожаловать в главное меню бота
 main_keyboard = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton("Каталог товаров", callback_data="catalog"),
+            InlineKeyboardButton("Каталог товаров", callback_data="catalog:0:10"),
         ],
         [
             InlineKeyboardButton(

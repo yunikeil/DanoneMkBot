@@ -1,23 +1,68 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import Application, CallbackQueryHandler, CommandHandler, ContextTypes
+import telegram
+from telegram import InlineKeyboardMarkup, Update
+from telegram.ext import filters, CallbackQueryHandler, ContextTypes
 
-from .__addons import catalog_text, catalog_keyboard
+from core.database import get_session
+from app.services import get_all_catalogs, get_catalog_by_id, get_catalogs_count
+from app.models import Catalog
+from .__addons import get_offset_limit_buttons, get_catalog_back_keyboard
 
 
 def get_catalog_callback():
-    pattern = '^catalog$'
-    
+    pattern = r"^catalog:-?\d+:-?\d+$"
+
     async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        """Parses the CallbackQuery and updates the message text."""
-        query = update.callback_query
+        await update.callback_query.answer()
+        _, offset, limit = update.callback_query.data.split(":")
+        catalogs: list[Catalog] | None = None
 
-        # CallbackQueries need to be answered, even if no notification to the user is needed
-        # Some clients may have trouble otherwise. See https://core.telegram.org/bots/api#callbackquery
-        await query.answer()
+        async with get_session() as db_session:
+            count_catalogs = await get_catalogs_count(db_session) 
+            catalogs = await get_all_catalogs(db_session, int(offset), int(limit))
 
-        await query.edit_message_text(text=catalog_text, reply_markup=catalog_keyboard)
-    
+        if not catalogs:
+            text = "no offers no offers"
+        else:
+            text = "offers in bd offers in bd "
+
+        try: # После можно будет перекинуть в общие хендлеры
+            await update.callback_query.edit_message_text(
+                text=text,
+                reply_markup=InlineKeyboardMarkup(
+                    [
+                        *[catalog.to_button(int(offset), int(limit)) for catalog in catalogs],
+                        *get_offset_limit_buttons(int(offset), int(limit), count_catalogs),
+                    ]
+                ),
+            )
+        except telegram.error.BadRequest:
+            pass
+        
+
     return CallbackQueryHandler(callback, pattern)
 
 
-catalog_callbacks = [get_catalog_callback()]
+def get_catalog_solo_callback():
+    # Отвечает за обработку единичных катологов
+    pattern = r"^catalog:-?\d+:-?\d+:-?\d+$"
+
+    async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        await update.callback_query.answer()
+        _, catalog_id, offset, limit = update.callback_query.data.split(":")
+        catalog: Catalog | None = None
+
+        async with get_session() as db_session:
+            catalog = await get_catalog_by_id(db_session, int(catalog_id))
+
+        if not catalog:
+            text = "cant fint this catalog"
+        else:
+            text = catalog.to_text()
+        
+        print(offset, limit)
+        await update.callback_query.edit_message_text(text, parse_mode="Markdown", reply_markup=get_catalog_back_keyboard(catalog_id, int(offset), int(limit)))
+
+    return CallbackQueryHandler(callback, pattern)
+
+
+catalog_callbacks = [get_catalog_callback(), get_catalog_solo_callback()]
