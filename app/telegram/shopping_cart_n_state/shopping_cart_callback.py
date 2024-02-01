@@ -42,7 +42,7 @@ def get_delete_shopping_cart__callback():
             c_cart = await get_shopping_cart_by_ids(db_session, int(catalog_id), update.callback_query.from_user.id)
             
             if not c_cart:
-                await update.callback_query.answer("Товар не был найдер в корзине")
+                await update.callback_query.answer("Товар не был найден в корзине")
                 return
             
             cart = await delete_shopping_cart(db_session, int(catalog_id), update.callback_query.from_user.id)
@@ -72,9 +72,7 @@ def get_shopping_cart_callback():
             text = "no carts no carts no carts"
         else:
             text = "carts in bd carts in bd carts in bd"
-        
-        print(offset, limit)
-        
+                
         try: # После можно будет перекинуть в общие хендлеры
             await update.callback_query.edit_message_text(
                 text=text,
@@ -118,5 +116,5 @@ def get_shopping_cart_solo_callback():
     return CallbackQueryHandler(callback, pattern)
 
 
-shopping_cart_callbacks = [get_add_to_shopping_cart_callback(), get_shopping_cart_callback(), get_shopping_cart_solo_callback()]
+shopping_cart_callbacks = [get_add_to_shopping_cart_callback(), get_delete_shopping_cart__callback(), get_shopping_cart_callback(), get_shopping_cart_solo_callback()]
 

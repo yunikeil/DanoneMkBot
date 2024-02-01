@@ -44,6 +44,6 @@ async def update_shopping_cart(db_session: AsyncSession, catalog_id: int, user_i
 async def delete_shopping_cart(db_session: AsyncSession, catalog_id: int, user_id: int):
     shopping_cart = await get_shopping_cart_by_ids(db_session, catalog_id, user_id)
     if shopping_cart:
-        db_session.delete(shopping_cart)
+        await db_session.delete(shopping_cart)
         await db_session.commit()
     return shopping_cart
