@@ -31,7 +31,10 @@ def get_catalog_back_keyboard(catalog_id: int, current_offset: int, current_limi
                 InlineKeyboardButton("Быстрая покупка", callback_data=f"purchase:{catalog_id}")
             ],
             [
-                InlineKeyboardButton("Добавить в корзину", callback_data=f"add_to_shopping_cart:{catalog_id}")
+                InlineKeyboardButton("Добавить в корзину", callback_data=f"add_shopping_cart:{catalog_id}")
+            ],
+            [
+                InlineKeyboardButton("Перейти в корзину ➡️", callback_data=f"shopping_cart:0:10")
             ],
             [
                 InlineKeyboardButton("Вернуться ↩️", callback_data=f"catalog:{current_offset}:{current_limit}")

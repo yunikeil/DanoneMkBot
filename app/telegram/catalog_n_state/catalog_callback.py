@@ -67,7 +67,6 @@ def get_catalog_solo_callback():
         else:
             text = catalog.to_text()
         
-        print(offset, limit)
         await update.callback_query.edit_message_text(text, parse_mode="Markdown", reply_markup=get_catalog_back_keyboard(catalog_id, int(offset), int(limit)))
 
     return CallbackQueryHandler(callback, pattern)

@@ -10,6 +10,7 @@ from .shopping_cart import (
     create_shopping_cart,
     get_shopping_cart_by_ids,
     get_all_shopping_carts,
+    get_shopping_cart_count,
     update_shopping_cart,
     delete_shopping_cart,
 )
