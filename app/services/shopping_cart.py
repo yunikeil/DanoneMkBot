@@ -1,6 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from sqlalchemy import func
+from sqlalchemy import func, select
 
 from app.models.shopping_cart import ShoppingCart
 
@@ -27,8 +26,8 @@ async def get_all_shopping_carts(db_session: AsyncSession, user_id: int, offset:
     return result.scalars().all()
 
 
-async def get_shopping_cart_count(db_session: AsyncSession):
-    result = await db_session.execute(select(func.count(ShoppingCart.user_id)))
+async def get_shopping_cart_count(db_session: AsyncSession, user_id: int):
+    result = await db_session.execute(select(func.count(ShoppingCart.user_id)).where(ShoppingCart.user_id == user_id))
     return result.scalar()
 
 

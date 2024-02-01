@@ -10,7 +10,7 @@ from .__addons import get_offset_limit_buttons, get_shopping_cart_back_keyboard
 
 def get_add_to_shopping_cart_callback():
     pattern = r"^add_shopping_cart:\d+$"
-    
+        
     async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         _, catalog_id = update.callback_query.data.split(":")
         
@@ -30,11 +30,11 @@ def get_add_to_shopping_cart_callback():
     return CallbackQueryHandler(callback, pattern)
 
 
-def get_delete_shopping_cart__callback():
-    pattern = r"^delete_shopping_cart:\d+$"
-    
-    async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        _, catalog_id = update.callback_query.data.split(":")
+def get_shopping_cart_callback():
+    pattern = r"^(shopping_cart|delete_shopping_cart):-?\d+:-?\d+:-?\d+$"
+
+    async def callback_delete(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        _, _, _, catalog_id = update.callback_query.data.split(":")
         
         cart: ShoppingCart | None = None
         
@@ -43,21 +43,18 @@ def get_delete_shopping_cart__callback():
             
             if not c_cart:
                 await update.callback_query.answer("Товар не был найден в корзине")
-                return
-            
+                await base_callback(update, context, True)
+                
             cart = await delete_shopping_cart(db_session, int(catalog_id), update.callback_query.from_user.id)
-        
+                    
         await update.callback_query.answer("Товар удалён из корзины")
+        await base_callback(update, context, True)
     
-    return CallbackQueryHandler(callback, pattern)
-
-
-def get_shopping_cart_callback():
-    pattern = r"^shopping_cart:-?\d+:-?\d+$"
-
-    async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        await update.callback_query.answer()
-        _, offset, limit = update.callback_query.data.split(":")
+    async def base_callback(update: Update, context: ContextTypes.DEFAULT_TYPE, is_answered: bool = False):
+        if not is_answered:
+            await update.callback_query.answer()
+        
+        _, offset, limit, _ = update.callback_query.data.split(":")
                 
         if offset == '-1' or limit == '-1':
             return
@@ -65,7 +62,7 @@ def get_shopping_cart_callback():
         carts: list[ShoppingCart] | None = None
 
         async with get_session() as db_session:
-            count_carts = await get_shopping_cart_count(db_session) 
+            count_carts = await get_shopping_cart_count(db_session, int(update.callback_query.from_user.id)) 
             carts = await get_all_shopping_carts(db_session, int(update.callback_query.from_user.id), int(offset), int(limit))
 
         if not carts:
@@ -85,14 +82,19 @@ def get_shopping_cart_callback():
             )
         except telegram.error.BadRequest:
             pass
-        
+
+    async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:       
+        if "delete" in update.callback_query.data:
+            await callback_delete(update, context)
+        else:
+            await base_callback(update, context)        
 
     return CallbackQueryHandler(callback, pattern)
 
 
 def get_shopping_cart_solo_callback():
     # Отвечает за обработку единичных катологов
-    pattern = r"^shopping_cart:\d+:-?\d+:-?\d+$"
+    pattern = r"^solo_shopping_cart:\d+:-?\d+:-?\d+$"
 
     async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.callback_query.answer()
@@ -116,5 +118,5 @@ def get_shopping_cart_solo_callback():
     return CallbackQueryHandler(callback, pattern)
 
 
-shopping_cart_callbacks = [get_add_to_shopping_cart_callback(), get_delete_shopping_cart__callback(), get_shopping_cart_callback(), get_shopping_cart_solo_callback()]
+shopping_cart_callbacks = [get_add_to_shopping_cart_callback(), get_shopping_cart_callback(), get_shopping_cart_solo_callback()]
 

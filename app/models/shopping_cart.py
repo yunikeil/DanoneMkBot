@@ -39,7 +39,7 @@ class ShoppingCart(Base):
         return [
             InlineKeyboardButton(
                 text=f"{self.catalog.name}; \n{self.catalog.description}",
-                callback_data=f"shopping_cart:{self.catalog_id}:{offset}:{limit}",
+                callback_data=f"solo_shopping_cart:{self.catalog_id}:{offset}:{limit}",
             )
         ]
 
