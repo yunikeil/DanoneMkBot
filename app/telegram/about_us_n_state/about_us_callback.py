@@ -22,7 +22,7 @@ def get_bot_version():
 
     async def callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.callback_query.answer(
-            text=f"Current version: {config.BOT_VERSION}", cache_time=10
+            text=f"Current version: {config.BOT_VERSION}", cache_time=10, show_alert=True
         )
 
     return CallbackQueryHandler(callback, pattern)
